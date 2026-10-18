@@ -30,18 +30,12 @@
             <p class="hospital-subtitle">Patient Feedback Portal</p>
           </div>
         </div>
-        <div class="header-right" style="display: flex; align-items: center; gap: 8px;">
-          <button type="button" class="btn-audio-toggle" id="btnAudioToggle" aria-label="Toggle voice guidance" title="Toggle doctor voice narration">
-            <span id="audioToggleIcon">🔊</span>
-            <span class="audio-toggle-text">Voice</span>
-          </button>
-          <div class="badge-verified">
-            <svg class="check-circle-svg" width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" fill="#10B981" />
-              <path d="m8.5 12.5 2.5 2.5 5-5" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <span>Verified</span>
-          </div>
+        <div class="badge-verified">
+          <svg class="check-circle-svg" width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" fill="#10B981" />
+            <path d="m8.5 12.5 2.5 2.5 5-5" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span>Verified Visit</span>
         </div>
       </header>
 
@@ -55,7 +49,7 @@
           <div class="screen-body welcome-body">
             <div class="assistant-bubble-row">
               <div class="assistant-avatar-wrap">
-                <canvas class="doctor-canvas" data-screen="stepWelcome" aria-label="Animated Doctor Assistant" role="img"></canvas>
+                <img src="assets/assistant_welcome.png" alt="Doctor Assistant" class="assistant-img" />
               </div>
               <div class="bubbles-stack">
                 <div class="speech-bubble bubble-top">
@@ -105,7 +99,7 @@
           <div class="screen-body">
             <div class="assistant-bubble-row">
               <div class="assistant-avatar-wrap">
-                <canvas class="doctor-canvas" data-screen="stepName" aria-label="Animated Doctor Assistant" role="img"></canvas>
+                <img src="assets/assistant_pointing.png" alt="Doctor Assistant" class="assistant-img" />
               </div>
               <div class="speech-bubble">
                 <div class="bubble-icon-circle blue">
@@ -155,7 +149,7 @@
           <div class="screen-body">
             <div class="assistant-bubble-row">
               <div class="assistant-avatar-wrap">
-                <canvas class="doctor-canvas" data-screen="stepPhone" aria-label="Animated Doctor Assistant" role="img"></canvas>
+                <img src="assets/assistant_pointing.png" alt="Doctor Assistant" class="assistant-img" />
               </div>
               <div class="speech-bubble">
                 <div class="bubble-icon-circle blue">
@@ -204,7 +198,7 @@
           <div class="screen-body">
             <div class="assistant-bubble-row">
               <div class="assistant-avatar-wrap">
-                <canvas class="doctor-canvas" data-screen="stepRating" aria-label="Animated Doctor Assistant" role="img"></canvas>
+                <img src="assets/assistant_thumbsup.png" alt="Doctor Assistant" class="assistant-img" />
               </div>
               <div class="speech-bubble">
                 <div class="bubble-header-tag">
@@ -265,7 +259,7 @@
           <div class="screen-body">
             <div class="assistant-bubble-row">
               <div class="assistant-avatar-wrap">
-                <canvas class="doctor-canvas" data-screen="stepMethod" aria-label="Animated Doctor Assistant" role="img"></canvas>
+                <img src="assets/assistant_welcome.png" alt="Doctor Assistant" class="assistant-img" />
               </div>
               <div class="speech-bubble">
                 <h2 class="bubble-title">Would you like to tell us more about your experience?</h2>
@@ -332,7 +326,7 @@
           <div class="screen-body">
             <div class="assistant-bubble-row compact">
               <div class="assistant-avatar-wrap">
-                <canvas class="doctor-canvas" data-screen="stepVoice" aria-label="Animated Doctor Assistant" role="img"></canvas>
+                <img src="assets/assistant_pointing.png" alt="Doctor Assistant" class="assistant-img" />
               </div>
               <div class="speech-bubble">
                 <h2 class="bubble-title">Speak your feedback</h2>
@@ -414,7 +408,7 @@
           <div class="screen-body">
             <div class="assistant-bubble-row compact">
               <div class="assistant-avatar-wrap">
-                <canvas class="doctor-canvas" data-screen="stepText" aria-label="Animated Doctor Assistant" role="img"></canvas>
+                <img src="assets/assistant_pointing.png" alt="Doctor Assistant" class="assistant-img" />
               </div>
               <div class="speech-bubble">
                 <h2 class="bubble-title">Tell us about your experience.</h2>
@@ -455,7 +449,7 @@
           <div class="screen-body">
             <div class="assistant-bubble-row compact">
               <div class="assistant-avatar-wrap">
-                <canvas class="doctor-canvas" data-screen="stepPreview" aria-label="Animated Doctor Assistant" role="img"></canvas>
+                <img src="assets/assistant_pointing.png" alt="Doctor Assistant" class="assistant-img" />
               </div>
               <div class="speech-bubble">
                 <h2 class="bubble-title">Here is your feedback</h2>
@@ -508,7 +502,7 @@
                 <span class="confetti c4">★</span>
               </div>
               <div class="assistant-center-wrap">
-                <canvas class="doctor-canvas doctor-canvas-success" data-screen="stepSuccess" aria-label="Animated Doctor Assistant" role="img"></canvas>
+                <img src="assets/assistant_namaste.png" alt="Thank You" class="assistant-namaste-img" />
                 <div class="success-check-badge">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                     <circle cx="12" cy="12" r="10" fill="#10B981"/>
@@ -558,7 +552,6 @@
 
   <!-- Audio Recorder helper & Main Application Script -->
   <script src="recordrtc.min.js"></script>
-  <script src="doctor-rig.js?v=1"></script>
-  <script src="app.js?v=41"></script>
+  <script src="app.js?v=40"></script>
 </body>
 </html>

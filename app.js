@@ -115,13 +115,8 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
     5: 'Excellent'
   };
 
-  let isInitialized = false;
-
   /* ── 1. Initialization ── */
   function init () {
-    if (isInitialized) return;
-    isInitialized = true;
-
     const urlParams     = new URLSearchParams(window.location.search);
     const hospitalParam = urlParams.get('hospital') || 'Tambaram Medical Center';
 
@@ -142,25 +137,6 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
       const cleanPhone = phoneParam.replace(/\D/g, '').slice(-10);
       patientPhoneInput.value = cleanPhone;
       patientPhone = cleanPhone;
-    }
-
-    // Register all character canvases with doctorRigController
-    if (window.doctorRigController) {
-      document.querySelectorAll('.doctor-canvas').forEach(canvas => {
-        const isSuccess = canvas.classList.contains('doctor-canvas-success');
-        window.doctorRigController.registerCanvas(canvas, { isSuccessMode: isSuccess });
-      });
-      window.doctorRigController.setPose('welcome');
-      window.doctorRigController.speak("Hello and welcome to Tambaram Medical Center! I am here to collect your feedback today. It will take just a few moments.");
-
-      // Setup Voice Audio Narration Toggle
-      const btnAudioToggle = document.getElementById('btnAudioToggle');
-      if (btnAudioToggle) {
-        btnAudioToggle.addEventListener('click', () => {
-          window.doctorRigController.toggleMute();
-        });
-        window.doctorRigController.updateAudioToggleButtons();
-      }
     }
 
     setupNavigation();
@@ -192,69 +168,6 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
     });
 
     targetScreen.classList.add('active');
-
-    // Trigger coordinated character rig poses, gestures, gaze tracking, and audible speech
-    if (window.doctorRigController) {
-      const pName = patientName ? patientName.split(' ')[0] : 'friend';
-      switch (targetScreen) {
-        case stepWelcome:
-          window.doctorRigController.setPose('welcome');
-          window.doctorRigController.speak("Hello and welcome to Tambaram Medical Center! I am here to collect your feedback today. It will take just a few moments.");
-          break;
-        case stepName:
-          window.doctorRigController.setPose('point_name');
-          window.doctorRigController.speak("What is your name? This helps us identify your feedback.");
-          break;
-        case stepPhone:
-          window.doctorRigController.setPose('gesture_phone');
-          window.doctorRigController.speak(`Could you please share your 10-digit mobile number, ${pName}?`);
-          break;
-        case stepRating:
-          if (selectedRating > 0) {
-            updateRatingReactionPose(selectedRating);
-          } else {
-            window.doctorRigController.setPose('rate_neutral');
-            window.doctorRigController.speak("How was your overall experience with us today? Tap a star to rate.");
-          }
-          break;
-        case stepMethod:
-          window.doctorRigController.setPose('offer_choice');
-          window.doctorRigController.speak("Would you like to speak your feedback using your microphone, or would you prefer typing it?");
-          break;
-        case stepVoice:
-          window.doctorRigController.setPose('listening');
-          window.doctorRigController.speak("Whenever you are ready, tap the microphone button and share your thoughts. I am listening carefully.");
-          break;
-        case stepText:
-          window.doctorRigController.setPose('reading');
-          window.doctorRigController.speak("Please type your feedback in the box below. Feel free to share compliments or areas for improvement.");
-          break;
-        case stepPreview:
-          window.doctorRigController.setPose('preview');
-          window.doctorRigController.speak("Here is your feedback summary prepared by AI. Feel free to review or edit it before submitting.");
-          break;
-        case stepSuccess:
-          window.doctorRigController.setPose('namaste');
-          window.doctorRigController.speak(`Thank you so much, ${pName}! Your feedback has been received. Have a wonderful day ahead!`);
-          setTimeout(() => {
-            if (stepSuccess && stepSuccess.classList.contains('active')) {
-              window.doctorRigController.setPose('goodbye');
-            }
-          }, 3500);
-          break;
-      }
-    }
-  }
-
-  function updateRatingReactionPose (starVal) {
-    if (!window.doctorRigController) return;
-    if (starVal <= 2) {
-      window.doctorRigController.setPose('rate_empathetic');
-    } else if (starVal === 3) {
-      window.doctorRigController.setPose('rate_thoughtful');
-    } else {
-      window.doctorRigController.setPose('rate_happy');
-    }
   }
 
   function updateNameDisplays (name) {
@@ -298,15 +211,8 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
     }
 
     if (patientNameInput) {
-      patientNameInput.addEventListener('focus', () => {
-        if (window.doctorRigController) window.doctorRigController.setGaze(0.85, 0.7);
-      });
-      patientNameInput.addEventListener('blur', () => {
-        if (window.doctorRigController) window.doctorRigController.setGaze(0.3, 0.3);
-      });
       patientNameInput.addEventListener('input', () => {
         if (nameInputError) nameInputError.classList.add('hidden');
-        if (window.doctorRigController) window.doctorRigController.setGaze(0.85, 0.7);
       });
       patientNameInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -344,17 +250,10 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
     }
 
     if (patientPhoneInput) {
-      patientPhoneInput.addEventListener('focus', () => {
-        if (window.doctorRigController) window.doctorRigController.setGaze(0.75, 0.65);
-      });
-      patientPhoneInput.addEventListener('blur', () => {
-        if (window.doctorRigController) window.doctorRigController.setGaze(0.3, 0.3);
-      });
       patientPhoneInput.addEventListener('input', (e) => {
         // Enforce numeric only
         patientPhoneInput.value = patientPhoneInput.value.replace(/\D/g, '').slice(0, 10);
         if (phoneInputError) phoneInputError.classList.add('hidden');
-        if (window.doctorRigController) window.doctorRigController.setGaze(0.75, 0.65);
       });
       patientPhoneInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -438,23 +337,11 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
         const starVal = parseInt(btn.dataset.star, 10);
         selectedRating = starVal;
         highlightStars(selectedRating);
-        updateRatingReactionPose(selectedRating);
         if (starLabelDisplay) {
           starLabelDisplay.textContent = RATING_LABELS[starVal] || '';
         }
         if (btnRatingNext) {
           btnRatingNext.disabled = false;
-        }
-
-        // Conversational doctor voice response to patient rating
-        if (window.doctorRigController) {
-          if (starVal <= 2) {
-            window.doctorRigController.speak("We are truly sorry to hear that. Please let us know what happened so we can improve.");
-          } else if (starVal === 3) {
-            window.doctorRigController.speak("Thank you for your rating. Please let us know how we can do better.");
-          } else {
-            window.doctorRigController.speak("Thank you so much! We are glad you had a wonderful visit!");
-          }
         }
       });
 
@@ -478,50 +365,6 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
   }
 
   /* ── 4. Voice Recording Engine (Groq Whisper + RecordRTC) ── */
-  let audioContext = null;
-  let audioAnalyser = null;
-  let audioDataArray = null;
-  let audioAnimFrame = null;
-
-  function startAudioLevelMeter(stream) {
-    try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx || !stream) return;
-      audioContext = new AudioCtx();
-      const source = audioContext.createMediaStreamSource(stream);
-      audioAnalyser = audioContext.createAnalyser();
-      audioAnalyser.fftSize = 64;
-      source.connect(audioAnalyser);
-      audioDataArray = new Uint8Array(audioAnalyser.frequencyBinCount);
-
-      function checkLevel() {
-        if (!isRecording) return;
-        audioAnalyser.getByteFrequencyData(audioDataArray);
-        let sum = 0;
-        for (let i = 0; i < audioDataArray.length; i++) sum += audioDataArray[i];
-        const avg = sum / (audioDataArray.length * 255);
-        if (window.doctorRigController) {
-          window.doctorRigController.setAudioLevel(avg);
-        }
-        audioAnimFrame = requestAnimationFrame(checkLevel);
-      }
-      checkLevel();
-    } catch (e) {
-      console.warn('Audio analyser init note:', e);
-    }
-  }
-
-  function stopAudioLevelMeter() {
-    if (audioAnimFrame) cancelAnimationFrame(audioAnimFrame);
-    if (audioContext) {
-      try { audioContext.close(); } catch (e) {}
-      audioContext = null;
-    }
-    if (window.doctorRigController) {
-      window.doctorRigController.setAudioLevel(0);
-    }
-  }
-
   function setupVoiceRecording () {
     if (btnVoiceToggle) {
       btnVoiceToggle.addEventListener('click', toggleVoiceRecording);
@@ -544,10 +387,6 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
     rawTranscript = '';
     recordedChunks = [];
     recordingSeconds = 0;
-
-    if (window.doctorRigController) {
-      window.doctorRigController.setPose('listening');
-    }
 
     // UI Updates
     if (micGlowWrap) micGlowWrap.classList.add('active');
@@ -586,8 +425,6 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
             sampleRate: 16000
           }
         });
-
-        startAudioLevelMeter(activeAudioStream);
 
         if (typeof RecordRTC !== 'undefined') {
           recordRTCInstance = new RecordRTC(activeAudioStream, {
@@ -655,7 +492,6 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
 
   function resetVoiceUI () {
     isRecording = false;
-    stopAudioLevelMeter();
     clearInterval(timerInterval);
     if (micGlowWrap) micGlowWrap.classList.remove('active');
     if (waveformBars) waveformBars.classList.remove('active');
@@ -672,10 +508,6 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
 
     if (speechRecognition) {
       try { speechRecognition.stop(); } catch (e) {}
-    }
-
-    if (window.doctorRigController) {
-      window.doctorRigController.setPose('thinking');
     }
 
     if (voiceStatusHint) {
@@ -802,16 +634,9 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
   /* ── 6. Text Feedback (Screen 6B) ── */
   function setupTextFeedback () {
     if (textFeedbackInput) {
-      textFeedbackInput.addEventListener('focus', () => {
-        if (window.doctorRigController) window.doctorRigController.setGaze(0.65, 0.65);
-      });
-      textFeedbackInput.addEventListener('blur', () => {
-        if (window.doctorRigController) window.doctorRigController.setGaze(0.2, 0.2);
-      });
       textFeedbackInput.addEventListener('input', () => {
         const len = textFeedbackInput.value.length;
         if (textCharCount) textCharCount.textContent = `${len} / 800`;
-        if (window.doctorRigController) window.doctorRigController.setGaze(0.65, 0.65);
       });
     }
 
@@ -832,10 +657,6 @@ const GOOGLE_REVIEW = 'https://www.google.com/search?q=Tambaram%20Medical%20Cent
           alert('Please enter a few words about your experience before continuing.');
           if (textFeedbackInput) textFeedbackInput.focus();
           return;
-        }
-
-        if (window.doctorRigController) {
-          window.doctorRigController.setPose('thinking');
         }
 
         const origHtml = btnTextContinue.innerHTML;

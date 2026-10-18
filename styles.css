@@ -168,39 +168,6 @@ html, body {
   flex-shrink: 0;
 }
 
-.btn-audio-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 4px 9px;
-  border-radius: var(--radius-pill);
-  color: #FFFFFF;
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-  flex-shrink: 0;
-}
-
-.btn-audio-toggle:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-1px);
-}
-
-.btn-audio-toggle:active {
-  transform: scale(0.96);
-}
-
-.btn-audio-toggle.muted {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: rgba(239, 68, 68, 0.4);
-  color: #FCA5A5;
-}
-
 /* ── 4. Screens Container & Step Screen Mechanics ── */
 .screens-container {
   flex: 1;
@@ -255,34 +222,24 @@ html, body {
 .assistant-avatar-wrap {
   width: 115px;
   max-width: 115px;
-  height: 155px;
   flex-shrink: 0;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  position: relative;
-}
-
-.doctor-canvas {
-  width: 115px;
-  height: 155px;
-  display: block;
-  filter: drop-shadow(0 6px 14px rgba(18, 59, 115, 0.12));
-  transform-origin: bottom center;
-}
-
-.doctor-canvas-success {
-  width: 130px;
-  height: 155px;
-  filter: drop-shadow(0 6px 16px rgba(18, 59, 115, 0.14));
 }
 
 .assistant-img {
   width: 100%;
   height: auto;
-  max-height: 155px;
+  max-height: 175px;
   object-fit: contain;
   filter: drop-shadow(0 6px 14px rgba(18, 59, 115, 0.12));
+  animation: subtleFloat 4s ease-in-out infinite;
+}
+
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
 }
 
 .bubbles-stack {
