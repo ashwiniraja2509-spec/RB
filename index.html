@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Tambaram Medical Center — Patient Feedback Portal</title>
+  <meta name="description" content="AI-Powered Conversational Patient Feedback & Review Portal for Tambaram Medical Center" />
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css?v=30" />
+</head>
+<body>
+
+  <!-- Application Shell Viewport -->
+  <div class="app-viewport">
+    <div class="app-shell">
+
+      <!-- Hospital Header -->
+      <header class="hospital-header">
+        <div class="header-left">
+          <div class="hospital-logo-circle">
+            <img src="tambaram-icon.png" alt="Tambaram Medical Center Logo" />
+          </div>
+          <div class="header-titles">
+            <h1 class="hospital-name" id="hospitalName">Tambaram Medical Center</h1>
+            <p class="hospital-subtitle">Patient Feedback Portal</p>
+          </div>
+        </div>
+        <div class="header-right" style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn-audio-toggle" id="btnAudioToggle" aria-label="Toggle voice guidance" title="Toggle doctor voice narration">
+            <span id="audioToggleIcon">🔊</span>
+            <span class="audio-toggle-text">Voice</span>
+          </button>
+          <div class="badge-verified">
+            <svg class="check-circle-svg" width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" fill="#10B981" />
+              <path d="m8.5 12.5 2.5 2.5 5-5" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>Verified</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Screens Container (No page scrolling) -->
+      <main class="screens-container" id="screensContainer">
+
+        <!-- ==========================================
+             SCREEN 1: WELCOME SCREEN
+        =========================================== -->
+        <section id="stepWelcome" class="step-screen active">
+          <div class="screen-body welcome-body">
+            <div class="assistant-bubble-row">
+              <div class="assistant-avatar-wrap">
+                <canvas class="doctor-canvas" data-screen="stepWelcome" aria-label="Animated Doctor Assistant" role="img"></canvas>
+              </div>
+              <div class="bubbles-stack">
+                <div class="speech-bubble bubble-top">
+                  <div class="bubble-header-pill">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1677FF" stroke-width="2.5">
+                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                      <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                      <path d="M12 11v6"/>
+                      <path d="M9 14h6"/>
+                    </svg>
+                    <span>Hello! 👋</span>
+                  </div>
+                  <p class="bubble-text bold">
+                    Welcome to<br />
+                    <span class="hospital-name-text">Tambaram Medical Center</span>
+                  </p>
+                </div>
+                <div class="speech-bubble bubble-sub">
+                  <p class="bubble-text">
+                    I'm here to collect your feedback. It will take just a few moments.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="screen-footer single-action">
+            <button type="button" class="btn-primary btn-pill full-width" id="btnStartFlow">
+              <span>Let's Start</span>
+              <svg class="arrow-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+            <div class="step-dots" aria-label="Step indicator">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 2: ASK PATIENT NAME
+        =========================================== -->
+        <section id="stepName" class="step-screen">
+          <div class="screen-body">
+            <div class="assistant-bubble-row">
+              <div class="assistant-avatar-wrap">
+                <canvas class="doctor-canvas" data-screen="stepName" aria-label="Animated Doctor Assistant" role="img"></canvas>
+              </div>
+              <div class="speech-bubble">
+                <div class="bubble-icon-circle blue">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1677FF" stroke-width="2.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                </div>
+                <h2 class="bubble-title">What is your name?</h2>
+                <p class="bubble-sub">(This helps us identify your feedback)</p>
+              </div>
+            </div>
+
+            <div class="input-card" id="nameCardWrap">
+              <div class="input-field-wrap">
+                <svg class="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <input type="text" id="patientNameInput" placeholder="Enter your full name" autocomplete="name" />
+              </div>
+              <p id="nameInputError" class="field-error-msg hidden">Please enter your name to continue.</p>
+            </div>
+          </div>
+
+          <div class="screen-footer nav-actions">
+            <button type="button" class="btn-back" id="btnBackToWelcome">← Back</button>
+            <button type="button" class="btn-primary btn-pill" id="btnNameNext">
+              <span>Next</span>
+              <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+            <div class="step-dots" aria-label="Step 1 of 4">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 3: ASK MOBILE NUMBER
+        =========================================== -->
+        <section id="stepPhone" class="step-screen">
+          <div class="screen-body">
+            <div class="assistant-bubble-row">
+              <div class="assistant-avatar-wrap">
+                <canvas class="doctor-canvas" data-screen="stepPhone" aria-label="Animated Doctor Assistant" role="img"></canvas>
+              </div>
+              <div class="speech-bubble">
+                <div class="bubble-icon-circle blue">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1677FF" stroke-width="2.5">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                </div>
+                <h2 class="bubble-title">Great, <span class="patient-name-display">Friend</span>!</h2>
+                <p class="bubble-sub">Could you please share your mobile number?</p>
+                <p class="bubble-sub-tiny">We may contact you if needed.</p>
+              </div>
+            </div>
+
+            <div class="input-card" id="phoneCardWrap">
+              <div class="input-field-wrap phone-wrap">
+                <svg class="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+                <input type="tel" id="patientPhoneInput" placeholder="Enter 10 digit number" maxlength="10" inputmode="numeric" autocomplete="tel" />
+              </div>
+              <p id="phoneInputError" class="field-error-msg hidden">Please enter a valid 10-digit mobile number.</p>
+            </div>
+          </div>
+
+          <div class="screen-footer nav-actions">
+            <button type="button" class="btn-back" id="btnBackToName">← Back</button>
+            <button type="button" class="btn-primary btn-pill" id="btnPhoneNext">
+              <span>Next</span>
+              <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+            <div class="step-dots" aria-label="Step 2 of 4">
+              <span class="dot"></span>
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 4: STAR RATING
+        =========================================== -->
+        <section id="stepRating" class="step-screen">
+          <div class="screen-body">
+            <div class="assistant-bubble-row">
+              <div class="assistant-avatar-wrap">
+                <canvas class="doctor-canvas" data-screen="stepRating" aria-label="Animated Doctor Assistant" role="img"></canvas>
+              </div>
+              <div class="speech-bubble">
+                <div class="bubble-header-tag">
+                  <span class="tag-text">Thanks!</span>
+                  <svg class="check-mini-svg" width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" fill="#10B981"/>
+                    <path d="m8.5 12.5 2.5 2.5 5-5" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <h2 class="bubble-title">How was your visit today?</h2>
+                <p class="bubble-sub">Tap a star to rate your experience.</p>
+              </div>
+            </div>
+
+            <div class="stars-card" id="starsCard">
+              <div class="stars-row" id="starContainer">
+                <button type="button" class="star-btn" data-star="1" aria-label="1 star Very Poor">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </button>
+                <button type="button" class="star-btn" data-star="2" aria-label="2 stars Poor">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </button>
+                <button type="button" class="star-btn" data-star="3" aria-label="3 stars Average">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </button>
+                <button type="button" class="star-btn" data-star="4" aria-label="4 stars Good">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </button>
+                <button type="button" class="star-btn" data-star="5" aria-label="5 stars Excellent">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </button>
+              </div>
+              <p id="starLabelDisplay" class="star-label-text">Tap a star to rate</p>
+            </div>
+          </div>
+
+          <div class="screen-footer nav-actions">
+            <button type="button" class="btn-back" id="btnBackToPhone">← Back</button>
+            <button type="button" class="btn-primary btn-pill" id="btnRatingNext" disabled>
+              <span>Next</span>
+              <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+            <div class="step-dots" aria-label="Step 3 of 4">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot active"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 5: CHOOSE FEEDBACK METHOD
+        =========================================== -->
+        <section id="stepMethod" class="step-screen">
+          <div class="screen-body">
+            <div class="assistant-bubble-row">
+              <div class="assistant-avatar-wrap">
+                <canvas class="doctor-canvas" data-screen="stepMethod" aria-label="Animated Doctor Assistant" role="img"></canvas>
+              </div>
+              <div class="speech-bubble">
+                <h2 class="bubble-title">Would you like to tell us more about your experience?</h2>
+                <p class="bubble-sub">You can speak in your own language or type your feedback.</p>
+              </div>
+            </div>
+
+            <div class="method-cards-stack">
+              <button type="button" class="method-card card-speak" id="btnChooseVoice">
+                <div class="method-icon-wrap blue">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5">
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                    <line x1="12" y1="19" x2="12" y2="22"/>
+                  </svg>
+                </div>
+                <div class="method-info">
+                  <h3 class="method-title">Speak Your Feedback</h3>
+                  <p class="method-desc">Tap and speak in Tamil, English, Hindi or any language</p>
+                </div>
+                <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2.5">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
+              </button>
+
+              <button type="button" class="method-card card-type" id="btnChooseText">
+                <div class="method-icon-wrap green">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                  </svg>
+                </div>
+                <div class="method-info">
+                  <h3 class="method-title">Type Your Feedback</h3>
+                  <p class="method-desc">Write your thoughts in a few words</p>
+                </div>
+                <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2.5">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
+              </button>
+
+              <button type="button" class="btn-skip-rating" id="btnSkipFeedback">
+                Skip and Submit Rating
+              </button>
+            </div>
+          </div>
+
+          <div class="screen-footer nav-actions">
+            <button type="button" class="btn-back" id="btnBackToRating">← Back</button>
+            <div></div>
+            <div class="step-dots" aria-label="Step 4 of 4">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot active"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 6A: VOICE FEEDBACK
+        =========================================== -->
+        <section id="stepVoice" class="step-screen">
+          <div class="screen-body">
+            <div class="assistant-bubble-row compact">
+              <div class="assistant-avatar-wrap">
+                <canvas class="doctor-canvas" data-screen="stepVoice" aria-label="Animated Doctor Assistant" role="img"></canvas>
+              </div>
+              <div class="speech-bubble">
+                <h2 class="bubble-title">Speak your feedback</h2>
+                <p class="bubble-sub">Tap the microphone and speak in your own language.</p>
+              </div>
+            </div>
+
+            <div class="voice-console-card">
+              <!-- Mic button with pulsing ripples -->
+              <div class="mic-glow-wrapper" id="micGlowWrap">
+                <div class="ripple-ring r1"></div>
+                <div class="ripple-ring r2"></div>
+                <div class="ripple-ring r3"></div>
+                <button type="button" class="mic-main-btn" id="btnVoiceToggle" aria-label="Toggle voice recording">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5">
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                    <line x1="12" y1="19" x2="12" y2="22"/>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Animated Waveform Bars -->
+              <div class="waveform-container" id="waveformBars">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+              </div>
+
+              <!-- Language Selector / Indicator -->
+              <div class="voice-lang-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1677FF" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="2" y1="12" x2="22" y2="12"/>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+                <select id="voiceLanguageSelect" class="lang-select-hidden">
+                  <option value="ta-IN" selected>Tamil</option>
+                  <option value="en-IN">English</option>
+                  <option value="hi-IN">Hindi</option>
+                  <option value="te-IN">Telugu</option>
+                  <option value="kn-IN">Kannada</option>
+                  <option value="ml-IN">Malayalam</option>
+                </select>
+                <label for="voiceLanguageSelect" class="lang-pill-label">Tamil &bull; English &bull; Hindi</label>
+              </div>
+
+              <!-- Timer Display -->
+              <div class="timer-text" id="voiceTimer">00:00 / 02:00</div>
+
+              <!-- Status Hint / Transcription message -->
+              <div id="voiceStatusHint" class="voice-status-hint">Tap below to start speaking</div>
+
+              <!-- Button Pill -->
+              <button type="button" class="btn-voice-trigger" id="btnVoiceTriggerPill">
+                <span>Tap to Start Recording</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="screen-footer nav-actions">
+            <button type="button" class="btn-back" id="btnBackFromVoice">← Back</button>
+            <div></div>
+            <div class="step-dots" aria-label="Step indicator">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot active"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 6B: TEXT FEEDBACK
+        =========================================== -->
+        <section id="stepText" class="step-screen">
+          <div class="screen-body">
+            <div class="assistant-bubble-row compact">
+              <div class="assistant-avatar-wrap">
+                <canvas class="doctor-canvas" data-screen="stepText" aria-label="Animated Doctor Assistant" role="img"></canvas>
+              </div>
+              <div class="speech-bubble">
+                <h2 class="bubble-title">Tell us about your experience.</h2>
+                <p class="bubble-sub">Write your thoughts in a few words.</p>
+              </div>
+            </div>
+
+            <div class="text-input-card">
+              <textarea id="textFeedbackInput" placeholder="Describe your experience in your own words..." maxlength="800" rows="5"></textarea>
+              <div class="text-card-footer">
+                <span id="textCharCount">0 / 800</span>
+                <button type="button" class="btn-clear-link" id="btnClearText">Clear text</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="screen-footer nav-actions">
+            <button type="button" class="btn-back" id="btnBackFromText">← Back</button>
+            <button type="button" class="btn-primary btn-pill" id="btnTextContinue">
+              <span>Continue</span>
+              <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+            <div class="step-dots" aria-label="Step indicator">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot active"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 7: AI-GENERATED REVIEW PREVIEW
+        =========================================== -->
+        <section id="stepPreview" class="step-screen">
+          <div class="screen-body">
+            <div class="assistant-bubble-row compact">
+              <div class="assistant-avatar-wrap">
+                <canvas class="doctor-canvas" data-screen="stepPreview" aria-label="Animated Doctor Assistant" role="img"></canvas>
+              </div>
+              <div class="speech-bubble">
+                <h2 class="bubble-title">Here is your feedback</h2>
+                <p class="bubble-ai-badge">(Generated by AI)</p>
+                <p class="bubble-sub">Please review and edit if needed.</p>
+              </div>
+            </div>
+
+            <div class="ai-review-card" id="aiReviewCard">
+              <button type="button" class="edit-icon-btn" id="btnEditReview" title="Edit your review">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1677FF" stroke-width="2.5">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
+              <textarea id="aiReviewEditText" class="review-editable-text" rows="5"></textarea>
+            </div>
+
+            <div class="preview-actions-row">
+              <button type="button" class="btn-outline btn-pill" id="btnTryAgain">Try Again</button>
+              <button type="button" class="btn-primary btn-pill" id="btnLooksGood">
+                <span>Looks Good</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="screen-footer nav-actions">
+            <button type="button" class="btn-back" id="btnBackFromPreview">← Back</button>
+            <div></div>
+            <div class="step-dots" aria-label="Step indicator">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot active"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SCREEN 8: SUCCESS SCREEN
+        =========================================== -->
+        <section id="stepSuccess" class="step-screen">
+          <div class="screen-body success-body">
+            
+            <div class="success-character-wrapper">
+              <div class="confetti-decorations" aria-hidden="true">
+                <span class="confetti c1">✦</span>
+                <span class="confetti c2">★</span>
+                <span class="confetti c3">✦</span>
+                <span class="confetti c4">★</span>
+              </div>
+              <div class="assistant-center-wrap">
+                <canvas class="doctor-canvas doctor-canvas-success" data-screen="stepSuccess" aria-label="Animated Doctor Assistant" role="img"></canvas>
+                <div class="success-check-badge">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" fill="#10B981"/>
+                    <path d="m8.5 12.5 2.5 2.5 5-5" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="success-message-group">
+              <h2 class="success-heading">Thank You!</h2>
+              <p class="success-desc">Your feedback has been submitted successfully.</p>
+            </div>
+
+            <div class="success-actions-stack">
+              <!-- Google Review Button -->
+              <a id="btnGoogleReviewAction" href="#" target="_blank" rel="noopener noreferrer" class="btn-google-action">
+                <svg class="google-g-svg" width="20" height="20" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                  <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                  <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                  <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                </svg>
+                <span>Write a Review on Google</span>
+                <svg class="external-link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+                </svg>
+              </a>
+
+              <!-- Go to Home Button -->
+              <button type="button" class="btn-home-action" id="btnGoHome">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1677FF" stroke-width="2.5">
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <span>Go to Home</span>
+              </button>
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Audio Recorder helper & Main Application Script -->
+  <script src="recordrtc.min.js"></script>
+  <script src="doctor-rig.js?v=1"></script>
+  <script src="app.js?v=41"></script>
+</body>
+</html>

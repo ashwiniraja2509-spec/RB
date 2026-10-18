@@ -1,0 +1,1175 @@
+/* ==========================================================================
+   Tambaram Medical Center — Patient Feedback Portal
+   Modern Conversational AI Feedback System (Redesign)
+   Matching Reference Design & Zero-Scroll Mobile Viewports
+   ========================================================================== */
+
+/* ── 1. CSS Reset & Variables ── */
+:root {
+  --primary-navy: #123B73;
+  --primary-navy-dark: #0D2B54;
+  --primary-blue: #1677FF;
+  --primary-blue-hover: #0E64DE;
+  --primary-blue-light: #EAF4FF;
+  --bg-gradient-start: #F3F8FF;
+  --bg-gradient-end: #FFFFFF;
+  --surface-white: #FFFFFF;
+  --text-primary: #152B50;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --success-green: #10B981;
+  --star-yellow: #FFB629;
+  --star-empty: #E2E8F0;
+  --border-color: #D9E7F8;
+  --border-subtle: #E8F0FA;
+  --shadow-card: 0 4px 16px rgba(18, 59, 115, 0.08);
+  --shadow-float: 0 8px 24px rgba(22, 119, 255, 0.22);
+  --radius-xl: 20px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-pill: 9999px;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Strict NO vertical scroll */
+  font-family: var(--font-family);
+  background: #EDF3FA;
+  color: var(--text-primary);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── 2. Viewport & Shell Container ── */
+.app-viewport {
+  width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 414px; /* Pixel-perfect mobile shell */
+  height: 100%;
+  max-height: 844px; /* iPhone 12/13/14 Pro target viewport */
+  background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  box-shadow: 0 16px 48px rgba(18, 59, 115, 0.14);
+  border: 1px solid rgba(217, 231, 248, 0.9);
+}
+
+@media (max-width: 480px) {
+  .app-shell {
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+}
+
+@media (min-width: 481px) {
+  .app-viewport {
+    padding: 16px;
+    background: #E8F0F8;
+  }
+  .app-shell {
+    height: min(844px, 96dvh);
+  }
+}
+
+/* ── 3. Hospital Header ── */
+.hospital-header {
+  background: var(--primary-navy);
+  color: #FFFFFF;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  z-index: 30;
+  box-shadow: 0 2px 10px rgba(18, 59, 115, 0.15);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hospital-logo-circle {
+  width: 36px;
+  height: 36px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.hospital-logo-circle img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.header-titles .hospital-name {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.2;
+  letter-spacing: -0.2px;
+}
+
+.header-titles .hospital-subtitle {
+  font-size: 11px;
+  color: #93C5FD;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.badge-verified {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  color: #6EE7B7;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.btn-audio-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 4px 9px;
+  border-radius: var(--radius-pill);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.btn-audio-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-audio-toggle:active {
+  transform: scale(0.96);
+}
+
+.btn-audio-toggle.muted {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #FCA5A5;
+}
+
+/* ── 4. Screens Container & Step Screen Mechanics ── */
+.screens-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.step-screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 14px 16px 16px 16px;
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(18px);
+  transition: opacity 0.25s ease-out, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden; /* Strict no scroll within any step */
+}
+
+.step-screen.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  z-index: 10;
+}
+
+.screen-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 12px;
+  overflow: hidden;
+}
+
+/* ── 5. Assistant Avatar & Speech Bubble (Universal Layout) ── */
+.assistant-bubble-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.assistant-avatar-wrap {
+  width: 115px;
+  max-width: 115px;
+  height: 155px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+}
+
+.doctor-canvas {
+  width: 115px;
+  height: 155px;
+  display: block;
+  filter: drop-shadow(0 6px 14px rgba(18, 59, 115, 0.12));
+  transform-origin: bottom center;
+}
+
+.doctor-canvas-success {
+  width: 130px;
+  height: 155px;
+  filter: drop-shadow(0 6px 16px rgba(18, 59, 115, 0.14));
+}
+
+.assistant-img {
+  width: 100%;
+  height: auto;
+  max-height: 155px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(18, 59, 115, 0.12));
+}
+
+.bubbles-stack {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.speech-bubble {
+  background: var(--surface-white);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  box-shadow: var(--shadow-card);
+  border: 1.5px solid var(--border-color);
+  position: relative;
+  flex: 1;
+}
+
+/* Triangle speech bubble tail pointing to assistant */
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: 14px;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 9px solid var(--border-color);
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: 15px;
+  left: -6px;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 8px solid var(--surface-white);
+}
+
+.bubble-header-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--primary-blue-light);
+  color: var(--primary-blue);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 6px;
+}
+
+.bubble-icon-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.bubble-icon-circle.blue {
+  background: var(--primary-blue-light);
+}
+
+.bubble-header-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 4px;
+}
+
+.bubble-header-tag .tag-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.bubble-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.bubble-sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.35;
+  margin-top: 3px;
+}
+
+.bubble-sub-tiny {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.bubble-ai-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary-blue);
+  margin-top: 2px;
+}
+
+.bubble-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.bubble-text.bold {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.hospital-name-text {
+  color: var(--primary-blue);
+}
+
+/* ── 6. Form Inputs & Rounded Cards (Screen 2 & 3) ── */
+.input-card {
+  background: var(--surface-white);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  box-shadow: var(--shadow-card);
+  border: 1.5px solid var(--border-color);
+  margin-top: 4px;
+}
+
+.input-field-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.input-field-wrap:focus-within {
+  background: #FFFFFF;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.15);
+}
+
+.input-field-wrap input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 14.5px;
+  font-family: inherit;
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+}
+
+.input-field-wrap input::placeholder {
+  color: #94A3B8;
+  font-weight: 400;
+}
+
+.phone-wrap {
+  padding-left: 10px;
+}
+
+.field-error-msg {
+  color: #EF4444;
+  font-size: 11.5px;
+  font-weight: 500;
+  margin-top: 6px;
+  padding-left: 4px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ── 7. Star Rating Screen (Screen 4) ── */
+.stars-card {
+  background: var(--surface-white);
+  border-radius: var(--radius-lg);
+  padding: 18px 14px;
+  box-shadow: var(--shadow-card);
+  border: 1.5px solid var(--border-color);
+  text-align: center;
+  margin-top: 4px;
+}
+
+.stars-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.star-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.star-btn svg {
+  width: 42px;
+  height: 42px;
+  fill: var(--star-empty);
+  transition: fill 0.2s ease, transform 0.2s ease;
+}
+
+.star-btn:hover {
+  transform: scale(1.15);
+}
+
+.star-btn.active svg {
+  fill: var(--star-yellow);
+  filter: drop-shadow(0 2px 6px rgba(255, 182, 41, 0.45));
+}
+
+.star-label-text {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-height: 22px;
+}
+
+/* ── 8. Method Selection Cards (Screen 5) ── */
+.method-cards-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.method-card {
+  width: 100%;
+  background: var(--surface-white);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  border: 1.5px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.method-card:hover {
+  border-color: var(--primary-blue);
+  box-shadow: 0 6px 20px rgba(22, 119, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.method-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.method-icon-wrap.blue {
+  background: linear-gradient(135deg, #1677FF 0%, #0D62D9 100%);
+  box-shadow: 0 4px 12px rgba(22, 119, 255, 0.3);
+}
+
+.method-icon-wrap.green {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.method-info {
+  flex: 1;
+}
+
+.method-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.method-desc {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.chevron-icon {
+  flex-shrink: 0;
+  color: #94A3B8;
+}
+
+.btn-skip-rating {
+  background: transparent;
+  border: none;
+  color: var(--primary-blue);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 4px;
+  transition: opacity 0.2s;
+}
+
+.btn-skip-rating:hover {
+  text-decoration: underline;
+}
+
+/* ── 9. Voice Console (Screen 6A) ── */
+.voice-console-card {
+  background: var(--surface-white);
+  border-radius: var(--radius-lg);
+  padding: 16px 14px 14px 14px;
+  border: 1.5px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.mic-glow-wrapper {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.mic-main-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1677FF 0%, #0B5ED7 100%);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  box-shadow: 0 6px 20px rgba(22, 119, 255, 0.4);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.mic-main-btn:hover {
+  transform: scale(1.06);
+}
+
+.mic-main-btn.recording {
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
+}
+
+.ripple-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(22, 119, 255, 0.25);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.mic-glow-wrapper.active .ripple-ring {
+  animation: ripplePulse 2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.mic-glow-wrapper.active .r1 { width: 78px; height: 78px; animation-delay: 0s; }
+.mic-glow-wrapper.active .r2 { width: 92px; height: 92px; animation-delay: 0.6s; }
+.mic-glow-wrapper.active .r3 { width: 106px; height: 106px; animation-delay: 1.2s; }
+
+@keyframes ripplePulse {
+  0% { transform: scale(0.85); opacity: 0.8; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+.waveform-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 24px;
+  margin-bottom: 8px;
+}
+
+.waveform-container .bar {
+  width: 3px;
+  height: 6px;
+  background: #CBD5E1;
+  border-radius: 2px;
+  transition: height 0.15s ease, background 0.2s ease;
+}
+
+.waveform-container.active .bar {
+  background: var(--primary-blue);
+  animation: barBounce 1.2s ease-in-out infinite alternate;
+}
+
+.waveform-container.active .bar:nth-child(2n) { animation-delay: 0.2s; }
+.waveform-container.active .bar:nth-child(3n) { animation-delay: 0.4s; }
+.waveform-container.active .bar:nth-child(4n) { animation-delay: 0.6s; }
+
+@keyframes barBounce {
+  0% { height: 4px; }
+  100% { height: 22px; }
+}
+
+.voice-lang-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--primary-blue-light);
+  color: var(--primary-blue);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.lang-select-hidden {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+}
+
+.timer-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.voice-status-hint {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  min-height: 18px;
+  margin-bottom: 10px;
+}
+
+.btn-voice-trigger {
+  width: 100%;
+  background: #EFF6FF;
+  color: var(--primary-blue);
+  border: 1.5px solid var(--border-color);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 9px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-voice-trigger:hover {
+  background: var(--primary-blue-light);
+  border-color: var(--primary-blue);
+}
+
+.btn-voice-trigger.recording {
+  background: #FEF2F2;
+  color: #EF4444;
+  border-color: #FECACA;
+}
+
+/* ── 10. Text Feedback (Screen 6B) ── */
+.text-input-card {
+  background: var(--surface-white);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  border: 1.5px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+  margin-top: 4px;
+}
+
+.text-input-card textarea {
+  width: 100%;
+  border: 1.5px solid #E2E8F0;
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: var(--text-primary);
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+  line-height: 1.45;
+  background: #F8FAFC;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.text-input-card textarea:focus {
+  background: #FFFFFF;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.15);
+}
+
+.text-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.btn-clear-link {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+.btn-clear-link:hover {
+  color: #EF4444;
+}
+
+/* ── 11. AI Review Preview (Screen 7) ── */
+.ai-review-card {
+  background: var(--surface-white);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  border: 1.5px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  margin-top: 4px;
+}
+
+.edit-icon-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary-blue-light);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  z-index: 5;
+}
+
+.edit-icon-btn:hover {
+  transform: scale(1.1);
+}
+
+.review-editable-text {
+  width: 100%;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 4px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: var(--text-primary);
+  line-height: 1.5;
+  resize: none;
+  background: transparent;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.review-editable-text:focus {
+  border-color: var(--primary-blue);
+  background: #F8FAFC;
+  padding: 8px;
+}
+
+.preview-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.preview-actions-row button {
+  flex: 1;
+}
+
+/* ── 12. Success Screen (Screen 8) ── */
+.success-body {
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.success-character-wrapper {
+  position: relative;
+  width: 150px;
+  height: 160px;
+  margin: 0 auto;
+}
+
+.confetti-decorations {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.confetti {
+  position: absolute;
+  font-size: 14px;
+  animation: confettiFloat 3s ease-in-out infinite alternate;
+}
+
+.c1 { top: 10px; left: 10px; color: #F59E0B; animation-delay: 0.1s; }
+.c2 { top: 15px; right: 12px; color: #EC4899; animation-delay: 0.6s; }
+.c3 { bottom: 35px; left: 5px; color: #3B82F6; animation-delay: 1.1s; }
+.c4 { bottom: 40px; right: 8px; color: #10B981; animation-delay: 1.6s; }
+
+@keyframes confettiFloat {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-8px) rotate(25deg); }
+}
+
+.assistant-center-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.assistant-namaste-img {
+  width: 130px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 16px rgba(18, 59, 115, 0.14));
+}
+
+.success-check-badge {
+  position: absolute;
+  bottom: 12px;
+  right: 16px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.35);
+}
+
+.success-message-group {
+  margin: 8px 0 16px 0;
+}
+
+.success-heading {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.success-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  max-width: 290px;
+  margin: 0 auto;
+}
+
+.success-actions-stack {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-google-action {
+  width: 100%;
+  background: var(--surface-white);
+  border: 1.5px solid #E2E8F0;
+  border-radius: var(--radius-pill);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-size: 13.5px;
+  font-weight: 700;
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s ease;
+}
+
+.btn-google-action:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.btn-home-action {
+  width: 100%;
+  background: #EFF6FF;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  padding: 11px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--primary-blue);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-home-action:hover {
+  background: var(--primary-blue-light);
+  border-color: var(--primary-blue);
+}
+
+/* ── 13. Navigation & Footer Actions ── */
+.screen-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  padding-top: 6px;
+}
+
+.screen-footer.nav-actions {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  width: 100%;
+}
+
+.btn-primary {
+  background: var(--primary-blue);
+  color: #FFFFFF;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  padding: 12px 24px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: var(--shadow-float);
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-blue-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(22, 119, 255, 0.3);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-primary.full-width {
+  width: 100%;
+}
+
+.btn-outline {
+  background: #FFFFFF;
+  color: var(--primary-blue);
+  border: 1.5px solid var(--primary-blue);
+  font-size: 13.5px;
+  font-weight: 700;
+  font-family: inherit;
+  padding: 11px 20px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  background: var(--primary-blue-light);
+}
+
+.btn-back {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 8px 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s;
+}
+
+.btn-back:hover {
+  color: var(--primary-blue);
+}
+
+.step-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  grid-column: 1 / -1;
+  margin-top: 2px;
+}
+
+.step-dots .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #CBD5E1;
+  transition: all 0.25s ease;
+}
+
+.step-dots .dot.active {
+  width: 18px;
+  border-radius: 4px;
+  background: var(--primary-blue);
+}
+
+/* ── 14. Micro-Screens Responsive Tuning (360x800 & 375x812) ── */
+@media (max-height: 740px) {
+  .hospital-header { padding: 8px 12px; }
+  .step-screen { padding: 8px 12px 10px 12px; }
+  .screen-body { gap: 8px; }
+  .assistant-avatar-wrap { width: 95px; }
+  .assistant-img { max-height: 140px; }
+  .speech-bubble { padding: 8px 10px; border-radius: 14px; }
+  .bubble-title { font-size: 13px; }
+  .bubble-sub { font-size: 11px; }
+  .bubble-text { font-size: 11.5px; }
+  .stars-row .star-btn svg { width: 34px; height: 34px; }
+  .mic-glow-wrapper { width: 70px; height: 70px; margin-bottom: 4px; }
+  .mic-main-btn { width: 52px; height: 52px; }
+  .mic-main-btn svg { width: 26px; height: 26px; }
+  .btn-primary { padding: 9px 18px; font-size: 13px; }
+  .success-character-wrapper { width: 120px; height: 130px; }
+  .assistant-namaste-img { width: 105px; }
+  .success-heading { font-size: 18px; }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .step-screen, .assistant-img, .mic-glow-wrapper, .waveform-container.active .bar, .confetti {
+    animation: none !important;
+    transition: none !important;
+  }
+}
